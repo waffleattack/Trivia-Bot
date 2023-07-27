@@ -229,8 +229,11 @@ async def query_image(ctx: Context, query: str) -> Optional[str]:
     new_ctx: Message = await bot.wait_for("message", check=check, timeout=30)
     print(new_ctx.attachments)
     if len(new_ctx.attachments) == 0:
+        content = None
+        if "http" in "".join(new_ctx.content):
+            content = "".join(new_ctx.content)
         await new_ctx.delete()
-        return None
+        return content
     content = new_ctx.attachments[0].url
     # ?await new_ctx.delete()
     return content
